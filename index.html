@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerador de Furigana</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <div class="header">
+        <span class="badge">Japanese</span>
+        <h1>Furigana Generator</h1>
+      </div>
+
+      <label class="input-label" for="inputText">Digite uma frase em japonês</label>
+      <textarea id="inputText" placeholder="Ex: 日本語の文章を入力してください..."></textarea>
+      <button id="generateBtn" type="button">Gerar Furigana</button>
+
+      <div class="result-box" id="resultOutput">
+        <span class="placeholder">O resultado aparecerá aqui...</span>
+      </div>
+    </main>
+
+    <script>
+      const API_URL = window.location.protocol === 'file:'
+        ? 'http://127.0.0.1:8000/furigana'
+        : '/furigana';
+
+      async function converterParaFurigana() {
+        const texto = document.getElementById('inputText').value;
+        const outputDiv = document.getElementById('resultOutput');
+
+        if (!texto.trim()) {
+          outputDiv.innerHTML = '<span style="color:#ef4444;">Digite algo antes de gerar o Furigana.</span>';
+          return;
+        }
+
+        outputDiv.innerHTML = '<span class="placeholder">Processando...</span>';
+
+        try {
+          const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: texto })
+          });
+
+          if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`HTTP ${response.status}: ${errorText}`);
+          }
+
+          const data = await response.json();
+          outputDiv.innerHTML = data.html || '<span style="color:#ef4444;">Resposta da API vazia.</span>';
+        } catch (error) {
+          outputDiv.innerHTML = '<span style="color:#ef4444;">Erro ao conectar com a API. Verifique se o servidor está rodando em http://127.0.0.1:8000.</span>';
+          console.error('Erro:', error);
+        }
+      }
+
+      document.getElementById('generateBtn').addEventListener('click', converterParaFurigana);
+    </script>
+  </body>
+</html>
