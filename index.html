@@ -23,9 +23,8 @@
     </main>
 
     <script>
-      const API_URL = window.location.protocol === 'file:'
-        ? 'http://127.0.0.1:8000/furigana'
-        : '/furigana';
+      // Change this URL if you want to point the frontend to a different API endpoint.
+      const API_URL = 'https://arthurakira.github.io/furigana-api/furigana';
 
       async function converterParaFurigana() {
         const texto = document.getElementById('inputText').value;
@@ -53,7 +52,7 @@
           const data = await response.json();
           outputDiv.innerHTML = data.html || '<span style="color:#ef4444;">Resposta da API vazia.</span>';
         } catch (error) {
-          outputDiv.innerHTML = '<span style="color:#ef4444;">Erro ao conectar com a API. Verifique se o servidor está rodando em http://127.0.0.1:8000.</span>';
+          outputDiv.innerHTML = '<span style="color:#ef4444;">Erro ao conectar com a API. Verifique se a URL está disponível: https://arthurakira.github.io/furigana-api/furigana.</span>';
           console.error('Erro:', error);
         }
       }
