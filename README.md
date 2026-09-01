@@ -2,6 +2,8 @@
 
 A small web project that converts Japanese text into Furigana using FastAPI and `pykakasi`.
 
+![Furigana app preview](img/image.png)
+
 ## Features
 
 - Accepts Japanese text via API or browser form
